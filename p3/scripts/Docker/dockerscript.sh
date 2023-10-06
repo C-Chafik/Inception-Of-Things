@@ -1,0 +1,1 @@
+sudo k3d cluste create --servers 1

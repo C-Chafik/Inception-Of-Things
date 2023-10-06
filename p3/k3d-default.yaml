@@ -1,0 +1,9 @@
+---
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: k3s-default
+servers: 1
+agents: 0
+image: docker.io/wil42/playground
+

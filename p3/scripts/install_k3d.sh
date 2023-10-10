@@ -10,3 +10,5 @@ KUBECONFIG=$(k3d kubeconfig write argo-cmarouf)
 kubectl create namespace argocd
 kubectl create namespace dev
 
+echo "! Run the following commands to access ArgoCD Pannel : !"
+echo " >>> kubectl port-forward svc/argocd-server -n argocd 8080:80 <<< "

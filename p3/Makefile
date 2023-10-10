@@ -1,5 +1,5 @@
 all:
-	./scripts/install_k3d.sh && ./scripts/install_argo_cd.sh
+	./scripts/setup.sh
 
 pass:
 	kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo

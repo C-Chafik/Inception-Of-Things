@@ -13,7 +13,7 @@ kubectl create namespace argocd
 kubectl create namespace dev
 
 # Installing ArgoCD
-kubectl apply -f ../confs/install-argocd.yaml -n argocd
+kubectl apply -f ./confs/install-argocd.yaml -n argocd
 
 echo "! Run the following commands to access ArgoCD Pannel : !"
 echo " >>> kubectl port-forward svc/argocd-server -n argocd 8080:80 <<< "

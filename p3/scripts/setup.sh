@@ -4,7 +4,7 @@
 curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
 # Creating the main cluster
-k3d cluster create argo-cmarouf -p 8080:80@loadbalancer --kubeconfig-switch-context
+k3d cluster create argo-cmarouf -p 8080:80@loadbalancer -p 8888:8888@loadbalancer --kubeconfig-switch-context
 
 KUBECONFIG=$(k3d kubeconfig write argo-cmarouf)
 
@@ -17,5 +17,6 @@ kubectl apply -f ./confs/install-argocd.yaml -n argocd
 kubectl apply -f ./confs/install-dev.yaml -n dev
 kubectl apply -f ./confs/argo-application.yaml -n argocd
 
-echo "! Run the following commands to access ArgoCD Pannel : !"
+echo "! Run the following commands to access ArgoCD Pannel and the application : !"
 echo " >>> kubectl port-forward svc/argocd-server -n argocd 8080:80 <<< "
+echo " >>> kubectl port-forward deployment/wil42-playground -n dev 8888:8888 <<< "

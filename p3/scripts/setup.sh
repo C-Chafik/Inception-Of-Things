@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# Install K3D
-curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-
 # Creating the main cluster
-k3d cluster create argo-cmarouf -p 8080:80@loadbalancer -p 8888:8888@loadbalancer --kubeconfig-switch-context
+k3d cluster create argo-cmarouf --kubeconfig-switch-context
 
 KUBECONFIG=$(k3d kubeconfig write argo-cmarouf)
 
@@ -12,11 +9,24 @@ KUBECONFIG=$(k3d kubeconfig write argo-cmarouf)
 kubectl create namespace argocd
 kubectl create namespace dev
 
-# Installing ArgoCD
+# Installing ArgoCD & Wil42-App
 kubectl apply -f ./confs/install-argocd.yaml -n argocd
-kubectl apply -f ./confs/install-dev.yaml -n dev
+kubectl apply -f ./confs/install-app.yaml -n dev
+
+# Wait for ArgoCD to be up
+kubectl wait --for=condition=Ready pod --all -n argocd --timeout=600s
+
+# Link Wil42-App to ArgoCD
+kubectl apply -f ./confs/argo-project.yaml -n argocd
 kubectl apply -f ./confs/argo-application.yaml -n argocd
 
-echo "! Run the following commands to access ArgoCD Pannel and the application : !"
-echo " >>> kubectl port-forward svc/argocd-server -n argocd 8080:80 <<< "
-echo " >>> kubectl port-forward deployment/wil42-playground -n dev 8888:8888 <<< "
+echo "== ArgoCD Credentials =="
+echo "Username: admin"
+echo -n "Password: "
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+echo -n "Access ArgoCD Dashboard : "
+echo "kubectl port-forward svc/argocd-server -n argocd 8080:443 &>/dev/null &"
+
+echo -n "Expose Wil Application : "
+echo "kubectl port-forward svc/wil42-playground-service -n dev 8888:8888 &>/dev/null &"

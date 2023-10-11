@@ -2,12 +2,16 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: wil42-playground
-  namespace: argocd
 spec:
+  project: argo-project
   source:
-    repoURL: https://github.com/Junya42/anremiki-cd
-    path: dev/install-dev.yaml
+    repoURL: https://github.com/Junya42/anremiki-cd 
     targetRevision: HEAD
+    path: app
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

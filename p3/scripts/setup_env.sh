@@ -4,6 +4,11 @@ apt-get -y update
 
 apt-get install -y curl
 
+apt-get install virtualbox
+
+wget https://releases.hashicorp.com/vagrant/2.2.19/vagrant_2.2.19_x86_64.deb
+
+sudo apt install ./vagrant_2.2.19_x86_64.deb
 # Install K3S
 
 curl -sfL https://get.k3s.io | sh -

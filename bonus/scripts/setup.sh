@@ -8,10 +8,17 @@ KUBECONFIG=$(k3d kubeconfig write argo-cmarouf)
 # Creating namespaces
 kubectl create namespace argocd
 kubectl create namespace dev
+kubectl create namespace gitlab
 
-# Installing ArgoCD & Wil42-App
+# Installing ArgoCD, Wil42-App
 kubectl apply -f ./confs/install-argocd.yaml -n argocd
 kubectl apply -f ./confs/install-app.yaml -n dev
+
+# Installing Gitlab and waiting it to be ready
+helm repo add gitlab https://charts.gitlab.io/
+helm repo update
+helm install gitlab gitlab/gitlab --namespace gitlab -f ./confs/gitlab-config.yaml
+kubectl wait --for=condition=Ready pod --all -n gitlab --timeout=600s
 
 # Wait for ArgoCD to be up
 kubectl wait --for=condition=Ready pod --all -n argocd --timeout=600s

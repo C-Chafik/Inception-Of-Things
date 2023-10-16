@@ -21,6 +21,4 @@ snap install docker
 # Install K3D
 curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
-sudo chmod 777 /etc/rancher/k3s/k3s.yaml
-
 export PATH="$PATH:/snap/bin"

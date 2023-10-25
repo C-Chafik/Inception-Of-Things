@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitlab
+spec:
+  project: argo-project
+  source:
+    repoURL: https://gitlab.com/anremiki/inception-of-things.git
+    chart: app
+    targetRevision: master
+    helm:
+      valueFiles:
+        - install-app.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitlab
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

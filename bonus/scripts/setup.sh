@@ -27,8 +27,4 @@ kubectl get secret -n gitlab gitlab-gitlab-initial-root-password -o jsonpath='{.
 
 echo "kubectl port-forward --address 0.0.0.0 svc/gitlab-webservice-default -n gitlab 8181:8181"
 
-<<<<<<< HEAD
-=======
 kubectl patch appprojects.argoproj.io argo-project -n argocd --type='json' -p='[{"op": "add", "path": "/spec/destinations/-", "value": {"server": "https://kubernetes.default.svc", "namespace": "gitlab"}}]'
-kubectl patch appprojects.argoproj.io argo-project -n argocd --type='json' -p='[{"op": "add", "path": "/spec/sourceRepos/-", "value": "https://gitlab.com/anremiki/*"}]'
->>>>>>> e6d1f3012191668cc6dd1052bc03284c03803b9f

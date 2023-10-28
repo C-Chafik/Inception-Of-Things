@@ -3,7 +3,7 @@
 # Creating the main cluster
 k3d cluster create argo-cmarouf --kubeconfig-switch-context
 
-KUBECONFIG=$(k3d kubeconfig write argo-cmarouf)
+export KUBECONFIG=$(k3d kubeconfig write argo-cmarouf)
 
 # Creating namespaces
 kubectl create namespace argocd

@@ -16,13 +16,13 @@ helm repo update
 
 export HELM_KUBE_CONTEXT=k3d-argo-cmarouf
 
-helm --kube-context=k3d-argo-cmarouf install gitlab gitlab/gitlab --namespace gitlab --set global.hosts.domain=localhost --set certmanager-issuer.email=anremiki@student.42.fr
+helm --kube-context=k3d-argo-cmarouf install gitlab gitlab/gitlab --set global.hosts.domain=localhost --set certmanager-issuer.email=anremiki@student.42.fr --set global.hosts.https="false" --set global.ingress.configureCertmanager="false" --set gitlab-runner.install="false" --namespace gitlab
 
-kubectl wait --for=condition=Ready pod --all -n gitlab --timeout=600s
+kubectl wait --for=condition=available deployment --all -n gitlab --timeout=-1s
 
-kubectl apply -f ./confs/gitlab-argo-application.yaml -n argocd
+echo ""
+echo -n "Pass gitlab: "
+kubectl get secret -n gitlab gitlab-gitlab-initial-root-password -o jsonpath='{.data.password}' | base64 -d; echo
 
-sleep 10
+echo "kubectl port-forward --address 0.0.0.0 svc/gitlab-webservice-default -n gitlab 8181:8181"
 
-kubectl patch appprojects.argoproj.io argo-project -n argocd --type='json' -p='[{"op": "add", "path": "/spec/destinations/-", "value": {"server": "https://kubernetes.default.svc", "namespace": "gitlab"}}]'
-kubectl patch appprojects.argoproj.io argo-project -n argocd --type='json' -p='[{"op": "add", "path": "/spec/sourceRepos/-", "value": "https://gitlab.com/anremiki/*"}]'

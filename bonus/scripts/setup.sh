@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 export KUBECONFIG=~/.kube/config
 
 kubectl config use-context k3d-argo-cmarouf
